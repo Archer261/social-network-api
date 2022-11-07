@@ -1,6 +1,5 @@
 const { ObjectID } = require('bson');
 const { Schema, model } = require('mongoose');
-const reactionSchema = require('./Assignment');
 
 // Schema to create Reaction model
 const reactionSchema = new Schema(
@@ -25,8 +24,7 @@ const reactionSchema = new Schema(
             default: () => Date.now(),
             required: true,
             get: () => formatDate()
-        },
-        reactions: [reactionSchema],
+        }
     },
     {
         toJSON: {
@@ -35,15 +33,6 @@ const reactionSchema = new Schema(
         },
     }
 );
-
-// function formatDate(input) {
-//     const separatorIndex = email.indexOf('@');
-//     if (separatorIndex < 3) {
-
-//         return email.slice(0, separatorIndex).replace(/./g, '*') +
-//             email.slice(separatorIndex);
-//     }
-// }
 
 const Reaction = model('reaction', reactionSchema);
 

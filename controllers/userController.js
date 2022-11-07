@@ -61,4 +61,34 @@ module.exports = {
                 }
             })
     },
+
+    addFriend(req, res) {
+        User.findOneAndDelete(
+            { _id: req.params.userId },
+            { _id: req.params.friendId },
+            (err, result) => {
+                if (result) {
+                    res.status(200).json({ message: `Username ${result.username} deleted` });
+                    console.log(`Username "${result.username}" deleted`);
+                } else {
+                    console.log("Uh Oh, something went wrong");
+                    res.status(500).json({ message: err });
+                }
+            })
+    },
+
+    deleteFriend(req, res) {
+        User.findOneAndDelete(
+            { _id: req.params.userId },
+            { _id: req.params.friendId },
+            (err, result) => {
+                if (result) {
+                    res.status(200).json({ message: `Username ${result.username} deleted` });
+                    console.log(`Username "${result.username}" deleted`);
+                } else {
+                    console.log("Uh Oh, something went wrong");
+                    res.status(500).json({ message: err });
+                }
+            })
+    },
 };
