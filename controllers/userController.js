@@ -2,9 +2,15 @@ const User = require('../models/User');
 
 module.exports = {
     getUsers(req, res) {
-        User.find()
-            .then((users) => res.json(users))
-            .catch((err) => res.status(500).json(err));
+        User.find({}, (err, result) => {
+            if (result) {
+                res.status(200).json(result);
+            } else {
+                console.log("Uh Oh, something went wrong");
+                res.status(500).json({ message: "something went wrong" });
+            }
+
+        })
     },
     getSingleUser(req, res) {
         User.findOne({ _id: req.params.userId })
