@@ -10,14 +10,14 @@ const {
 const {
     addReaction,
     deleteReaction
-} = require('../../controllers/reactionController')
+} = require('../../controllers/reactionController.js')
 
-router.route('/').get(getThoughts).post(createThought);
+router.route('/').get(getThoughts).post(createThought)
 
-router.route('/:id').get(getSingleThought).put(updateThought).delete(deleteThought);
+router.route('/:id').get(getSingleThought).put(updateThought).delete(deleteThought)
 
-router.route('/:thoughtId/:reactions').post(addReaction)
+router.route("/:thoughtId").post(addReaction).delete(deleteReaction)
 
-router.route('/:thoughtId/:reactions/:reactionId').delete(deleteReaction)
+router.route("/:thoughtId/:reactionId").delete(deleteReaction)
 
 module.exports = router;

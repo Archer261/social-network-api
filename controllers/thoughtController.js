@@ -1,5 +1,6 @@
 const Thought = require('../models/Thought');
-const Reaction = require('../models/Reaction')
+const Reaction = require('../models/Reaction');
+const User = require('../models/User');
 
 module.exports = {
     getThoughts(req, res) {
@@ -24,11 +25,29 @@ module.exports = {
             )
             .catch((err) => res.status(500).json(err));
     },
+
     // create a new Thought
     createThought(req, res) {
         Thought.create(req.body)
-            .then((dbThoughtData) => res.json(dbThoughtData))
-            .catch((err) => res.status(500).json(err));
+            .then((res) => {
+                return res
+            })
+            .then((tObj) => {
+                console.log(req.body.userId)
+                return User.findOneAndUpdate(
+                    { _id: req.body.userId },
+                    { $push: { thoughts: tObj } },
+                    { new: true }
+                );
+            })
+            .then(thoughtData => {
+                if (!thoughtData) {
+                    res.status(404).json({ message: 'There was no reaction found' });
+                    return;
+                }
+                res.json(thoughtData);
+            })
+            .catch(err => res.json(err));
     },
 
     // find a single Thought and update
@@ -50,7 +69,7 @@ module.exports = {
     // find a single Thought and delete
     deleteThought(req, res) {
         Thought.findOneAndDelete(
-            { _id: req.params.ThoughtId },
+            { _id: req.params.thoughtId },
             req.body,
             (err, result) => {
                 if (result) {
