@@ -10,20 +10,14 @@ Application uses Mongoose.
 ## **Table of Contents**
 
 1. [Installation](#Installation)
-2. [Usage](#Usage)
-3. [License](#License)
-4. [Tests](#Test)
-5. [Contributing](#Contributing)
-6. [Questions](#Questions)
+2. [License](#License)
+3. [Tests](#Test)
+4. [Questions](#Questions)
 
 ### **Installation**
 
 1. Clone repository
 2. run npm start in terminal
-
-### **Usage**
-
-Use
 
 ### **Tests**
 
