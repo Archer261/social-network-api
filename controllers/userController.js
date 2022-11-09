@@ -63,32 +63,58 @@ module.exports = {
     },
 
     addFriend(req, res) {
-        User.findOneAndDelete(
+        User.findOneAndUpdate(
             { _id: req.params.userId },
-            { _id: req.params.friendId },
-            (err, result) => {
-                if (result) {
-                    res.status(200).json({ message: `Username ${result.username} deleted` });
-                    console.log(`Username "${result.username}" deleted`);
-                } else {
-                    console.log("Uh Oh, something went wrong");
-                    res.status(500).json({ message: err });
+            { $addToSet: { friends: req.params.friendId } },
+            { new: true }
+        )
+            .then(userResults => {
+                if (!userResults) {
+                    res.status(404).json({ message: 'There was no friend found with this id' });
+                    return;
                 }
+                User.findOneAndUpdate(
+                    { _id: req.params.friendId },
+                    { $addToSet: { friends: req.params.userId } },
+                    { new: true }
+                )
+                    .then(results => {
+                        if (!results) {
+                            res.status(404).json({ message: 'There was no friend found with this id' })
+                            return;
+                        }
+                        res.json(userResults);
+                    })
+                    .catch(err => res.json(err));
             })
+            .catch(err => res.json(err));
     },
 
     deleteFriend(req, res) {
-        User.findOneAndDelete(
+        User.findOneAndUpdate(
             { _id: req.params.userId },
-            { _id: req.params.friendId },
-            (err, result) => {
-                if (result) {
-                    res.status(200).json({ message: `Username ${result.username} deleted` });
-                    console.log(`Username "${result.username}" deleted`);
-                } else {
-                    console.log("Uh Oh, something went wrong");
-                    res.status(500).json({ message: err });
-                }
-            })
+            { $pull: { friends: req.params.id } },
+            { new: true }
+        ).then((data) => {
+            if (!data) {
+                res.status(404).json({ message: "No friends with this id" });
+                return;
+            }
+            User.findOneAndUpdate(
+                { _id: req.params.friendId },
+                { $pull: { friends: req.params.userId } },
+                { new: true }
+            )
+                .then((data) => {
+                    if (!data) {
+                        res.status(404).json({ message: "No friends with this id" });
+                    }
+                    res.json(data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    res.status(500).json(err);
+                });
+        });
     },
 };

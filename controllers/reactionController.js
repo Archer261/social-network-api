@@ -2,7 +2,7 @@ const User = require('../models/User');
 const Thought = require('../models/Thought')
 const Reaction = require('../models/Reaction')
 
-// find a single Thought and delete
+// find a single reaction and delete
 module.exports = {
     addReaction(req, res) {
         Reaction.create(req.body)
@@ -28,17 +28,14 @@ module.exports = {
                 res.json(thoughtData);
             })
             .catch(err => res.json(err));
-
     },
 
-    // find a single Thought and delete
+    // find a single reaction and delete
     deleteReaction(req, res) {
-
-        Reaction.findOneAndDelete(
-            { _id: req.params.reactionId }
+        Reaction.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $pull: { reactions: req.body.reactionId } },
         )
-            .then(reactionData => res.json(reactionData))
-            .catch(err => res.json(err))
+            .then((req) => { return req })
     }
 }
-

@@ -68,9 +68,8 @@ module.exports = {
 
     // find a single Thought and delete
     deleteThought(req, res) {
-        Thought.findOneAndDelete(
+        Thought.deleteOne(
             { _id: req.params.thoughtId },
-            req.body,
             (err, result) => {
                 if (result) {
                     res.status(200).json({ message: `Thought deleted` });
