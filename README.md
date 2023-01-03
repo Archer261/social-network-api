@@ -5,7 +5,7 @@
 ## **Description**
 
 A noSQL application showcases the backend API functionality of a potnetial social media application.
-Application uses Mongoose.
+Application uses Mongoose with MongoDB.
 
 Start server: 
 
